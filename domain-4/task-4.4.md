@@ -1,49 +1,49 @@
 # Task 4.4: Implement validation, retry, and feedback loops for extraction quality
 
-### Knowledge of:
+## Knowledge of:
 
-- **Retry-with-error-feedback: appending specific validation errors to the prompt on retry to guide the model toward correction**
+### ◇ Retry-with-error-feedback: appending specific validation errors to the prompt on retry to guide the model toward correction
 
-  Don't just retry — tell Claude what went wrong. "The 'amount' field should be a number but you returned a string '45.99'. Please extract it as a numeric value."
+Don't just retry — tell Claude what went wrong. "The 'amount' field should be a number but you returned a string '45.99'. Please extract it as a numeric value."
 
-- **The limits of retry: retries are ineffective when the required information is simply absent from the source document (vs format or structural errors)**
+### ◇ The limits of retry: retries are ineffective when the required information is simply absent from the source document (vs format or structural errors)
 
-  | Error type | Retry effective? | Why |
-  |---|---|---|
-  | Format mismatch (string vs number) | Yes | Claude can fix the format |
-  | Structural error (wrong field) | Yes | Claude can reorganize |
-  | Information absent from source | No | Can't extract what doesn't exist |
+| Error type | Retry effective? | Why |
+|---|---|---|
+| Format mismatch (string vs number) | Yes | Claude can fix the format |
+| Structural error (wrong field) | Yes | Claude can reorganize |
+| Information absent from source | No | Can't extract what doesn't exist |
 
-- **Feedback loop design: tracking which code constructs trigger findings (`detected_pattern` field) to enable systematic analysis of dismissal patterns**
+### ◇ Feedback loop design: tracking which code constructs trigger findings (`detected_pattern` field) to enable systematic analysis of dismissal patterns
 
-  Add a `detected_pattern` field to findings. When developers dismiss findings, you can analyze *which patterns* produce false positives and refine your prompts accordingly.
+Add a `detected_pattern` field to findings. When developers dismiss findings, you can analyze *which patterns* produce false positives and refine your prompts accordingly.
 
-- **The difference between semantic validation errors (values don't sum, wrong field placement) and schema syntax errors (eliminated by tool use)**
+### ◇ The difference between semantic validation errors (values don't sum, wrong field placement) and schema syntax errors (eliminated by tool use)
 
-  Tool use eliminates syntax errors automatically. You still need custom validation for semantic correctness.
+Tool use eliminates syntax errors automatically. You still need custom validation for semantic correctness.
 
-### Skills in:
+## Skills in:
 
-- **Implementing follow-up requests that include the original document, the failed extraction, and specific validation errors for model self-correction**
+### ◆ Implementing follow-up requests that include the original document, the failed extraction, and specific validation errors for model self-correction
 
-  On retry, include:
-  1. Original document
-  2. The failed extraction attempt
-  3. Specific validation errors
+On retry, include:
+1. Original document
+2. The failed extraction attempt
+3. Specific validation errors
 
-  This gives Claude maximum context to self-correct.
+This gives Claude maximum context to self-correct.
 
-- **Identifying when retries will be ineffective (e.g., information exists only in an external document not provided) versus when they will succeed (format mismatches, structural output errors)**
+### ◆ Identifying when retries will be ineffective (e.g., information exists only in an external document not provided) versus when they will succeed (format mismatches, structural output errors)
 
-  If the information isn't in the source, retrying won't help. Return null/unknown instead.
+If the information isn't in the source, retrying won't help. Return null/unknown instead.
 
-- **Adding `detected_pattern` fields to structured findings to enable analysis of false positive patterns when developers dismiss findings**
+### ◆ Adding `detected_pattern` fields to structured findings to enable analysis of false positive patterns when developers dismiss findings
 
-  Track what triggered each finding so you can analyze and improve over time.
+Track what triggered each finding so you can analyze and improve over time.
 
-- **Designing self-correction validation flows: extracting "calculated_total" alongside "stated_total" to flag discrepancies, adding "conflict_detected" booleans for inconsistent source data**
+### ◆ Designing self-correction validation flows: extracting "calculated_total" alongside "stated_total" to flag discrepancies, adding "conflict_detected" booleans for inconsistent source data
 
-  Have Claude extract both the calculated and stated values. If they don't match, flag it — don't silently pick one.
+Have Claude extract both the calculated and stated values. If they don't match, flag it — don't silently pick one.
 
 ---
 

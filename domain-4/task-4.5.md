@@ -1,46 +1,46 @@
 # Task 4.5: Design efficient batch processing strategies
 
-### Knowledge of:
+## Knowledge of:
 
-- **The Message Batches API: 50% cost savings, up to 24-hour processing window, no guaranteed latency SLA**
+### ◇ The Message Batches API: 50% cost savings, up to 24-hour processing window, no guaranteed latency SLA
 
-  Half the cost, but no latency guarantee. Results may take up to 24 hours.
+Half the cost, but no latency guarantee. Results may take up to 24 hours.
 
-- **Batch processing is appropriate for non-blocking, latency-tolerant workloads (overnight reports, weekly audits, nightly test generation) and inappropriate for blocking workflows (pre-merge checks)**
+### ◇ Batch processing is appropriate for non-blocking, latency-tolerant workloads (overnight reports, weekly audits, nightly test generation) and inappropriate for blocking workflows (pre-merge checks)
 
-  | Workflow | API | Why |
-  |---|---|---|
-  | Pre-merge checks | Synchronous | Developers are waiting |
-  | Nightly test generation | Batch | Can process overnight |
-  | Weekly audit reports | Batch | No urgency |
+| Workflow | API | Why |
+|---|---|---|
+| Pre-merge checks | Synchronous | Developers are waiting |
+| Nightly test generation | Batch | Can process overnight |
+| Weekly audit reports | Batch | No urgency |
 
-  Exam Question 11: batch for overnight reports, real-time for pre-merge checks (answer A).
+Exam Question 11: batch for overnight reports, real-time for pre-merge checks (answer A).
 
-- **The batch API does not support multi-turn tool calling within a single request (cannot execute tools mid-request and return results)**
+### ◇ The batch API does not support multi-turn tool calling within a single request (cannot execute tools mid-request and return results)
 
-  Batch requests are single-turn. No agentic loops within a batch request.
+Batch requests are single-turn. No agentic loops within a batch request.
 
-- **`custom_id` fields for correlating batch request/response pairs**
+### ◇ `custom_id` fields for correlating batch request/response pairs
 
-  Each request has a `custom_id` that appears in the response, letting you match results to inputs.
+Each request has a `custom_id` that appears in the response, letting you match results to inputs.
 
-### Skills in:
+## Skills in:
 
-- **Matching API approach to workflow latency requirements: synchronous API for blocking pre-merge checks, batch API for overnight/weekly analysis**
+### ◆ Matching API approach to workflow latency requirements: synchronous API for blocking pre-merge checks, batch API for overnight/weekly analysis
 
-  Choose the API based on whether someone is waiting for the result.
+Choose the API based on whether someone is waiting for the result.
 
-- **Calculating batch submission frequency based on SLA constraints (e.g., 4-hour windows to guarantee 30-hour SLA with 24-hour batch processing)**
+### ◆ Calculating batch submission frequency based on SLA constraints (e.g., 4-hour windows to guarantee 30-hour SLA with 24-hour batch processing)
 
-  If batch processing takes up to 24 hours and you need results within 30 hours, submit at least 6 hours before the deadline.
+If batch processing takes up to 24 hours and you need results within 30 hours, submit at least 6 hours before the deadline.
 
-- **Handling batch failures: resubmitting only failed documents (identified by `custom_id`) with appropriate modifications (e.g., chunking documents that exceeded context limits)**
+### ◆ Handling batch failures: resubmitting only failed documents (identified by `custom_id`) with appropriate modifications (e.g., chunking documents that exceeded context limits)
 
-  Don't resubmit the entire batch. Identify failures by `custom_id`, fix the issue (e.g., chunk oversized docs), resubmit only those.
+Don't resubmit the entire batch. Identify failures by `custom_id`, fix the issue (e.g., chunk oversized docs), resubmit only those.
 
-- **Using prompt refinement on a sample set before batch-processing large volumes to maximize first-pass success rates and reduce iterative resubmission costs**
+### ◆ Using prompt refinement on a sample set before batch-processing large volumes to maximize first-pass success rates and reduce iterative resubmission costs
 
-  Test your prompt on 10-20 samples first. Fix issues. Then batch-process thousands. Much cheaper than iterating on the full batch.
+Test your prompt on 10-20 samples first. Fix issues. Then batch-process thousands. Much cheaper than iterating on the full batch.
 
 ---
 

@@ -1,44 +1,44 @@
 # Task 4.2: Apply few-shot prompting to improve output consistency and quality
 
-### Knowledge of:
+## Knowledge of:
 
-- **Few-shot examples as the most effective technique for achieving consistently formatted, actionable output when detailed instructions alone produce inconsistent results**
+### ◇ Few-shot examples as the most effective technique for achieving consistently formatted, actionable output when detailed instructions alone produce inconsistent results
 
-  Instructions describe what you want. Examples *show* what you want. When instructions aren't enough, add examples.
+Instructions describe what you want. Examples *show* what you want. When instructions aren't enough, add examples.
 
-- **The role of few-shot examples in demonstrating ambiguous-case handling (e.g., tool selection for ambiguous requests, branch-level test coverage gaps)**
+### ◇ The role of few-shot examples in demonstrating ambiguous-case handling (e.g., tool selection for ambiguous requests, branch-level test coverage gaps)
 
-  Examples are especially powerful for ambiguous cases where the "right" answer depends on judgment. Show Claude how you'd handle 2-3 ambiguous cases and it generalizes the pattern.
+Examples are especially powerful for ambiguous cases where the "right" answer depends on judgment. Show Claude how you'd handle 2-3 ambiguous cases and it generalizes the pattern.
 
-- **How few-shot examples enable the model to generalize judgment to novel patterns rather than matching only pre-specified cases**
+### ◇ How few-shot examples enable the model to generalize judgment to novel patterns rather than matching only pre-specified cases
 
-  Good examples teach the *reasoning pattern*, not just the specific cases shown. Claude applies the same judgment to new situations it hasn't seen in the examples.
+Good examples teach the *reasoning pattern*, not just the specific cases shown. Claude applies the same judgment to new situations it hasn't seen in the examples.
 
-- **The effectiveness of few-shot examples for reducing hallucination in extraction tasks (e.g., handling informal measurements, varied document structures)**
+### ◇ The effectiveness of few-shot examples for reducing hallucination in extraction tasks (e.g., handling informal measurements, varied document structures)
 
-  In extraction tasks, examples showing "this field is not in the document → return null" dramatically reduces fabrication compared to instructions alone.
+In extraction tasks, examples showing "this field is not in the document → return null" dramatically reduces fabrication compared to instructions alone.
 
-### Skills in:
+## Skills in:
 
-- **Creating 2-4 targeted few-shot examples for ambiguous scenarios that show reasoning for why one action was chosen over plausible alternatives**
+### ◆ Creating 2-4 targeted few-shot examples for ambiguous scenarios that show reasoning for why one action was chosen over plausible alternatives
 
-  Don't just show input→output. Show the *reasoning*: "This request mentions an order number, so we use `lookup_order` not `get_customer` because the customer is asking about order status, not account info."
+Don't just show input→output. Show the *reasoning*: "This request mentions an order number, so we use `lookup_order` not `get_customer` because the customer is asking about order status, not account info."
 
-- **Including few-shot examples that demonstrate specific desired output format (location, issue, severity, suggested fix) to achieve consistency**
+### ◆ Including few-shot examples that demonstrate specific desired output format (location, issue, severity, suggested fix) to achieve consistency
 
-  Show the exact output structure you want repeated across all findings.
+Show the exact output structure you want repeated across all findings.
 
-- **Providing few-shot examples distinguishing acceptable code patterns from genuine issues to reduce false positives while enabling generalization**
+### ◆ Providing few-shot examples distinguishing acceptable code patterns from genuine issues to reduce false positives while enabling generalization
 
-  Show examples of code that *looks* like a bug but is actually fine (acceptable pattern), alongside genuine bugs. This teaches the boundary.
+Show examples of code that *looks* like a bug but is actually fine (acceptable pattern), alongside genuine bugs. This teaches the boundary.
 
-- **Using few-shot examples to demonstrate correct handling of varied document structures (inline citations vs bibliographies, methodology sections vs embedded details)**
+### ◆ Using few-shot examples to demonstrate correct handling of varied document structures (inline citations vs bibliographies, methodology sections vs embedded details)
 
-  Documents vary widely. Examples showing extraction from different structures help Claude handle novel formats.
+Documents vary widely. Examples showing extraction from different structures help Claude handle novel formats.
 
-- **Adding few-shot examples showing correct extraction from documents with varied formats to address empty/null extraction of required fields**
+### ◆ Adding few-shot examples showing correct extraction from documents with varied formats to address empty/null extraction of required fields
 
-  Show examples where a field is missing from the source document and the correct output is `null` — not a fabricated value.
+Show examples where a field is missing from the source document and the correct output is `null` — not a fabricated value.
 
 ---
 

@@ -1,55 +1,55 @@
 # Task 4.3: Enforce structured output using tool use and JSON schemas
 
-### Knowledge of:
+## Knowledge of:
 
-- **Tool use (`tool_use`) with JSON schemas as the most reliable approach for guaranteed schema-compliant structured output, eliminating JSON syntax errors**
+### ◇ Tool use (`tool_use`) with JSON schemas as the most reliable approach for guaranteed schema-compliant structured output, eliminating JSON syntax errors
 
-  `tool_use` forces Claude to output valid JSON matching your schema. No parsing errors, no malformed JSON.
+`tool_use` forces Claude to output valid JSON matching your schema. No parsing errors, no malformed JSON.
 
-- **The distinction between `tool_choice: "auto"` (model may return text instead of calling a tool), `"any"` (model must call a tool but can choose which), and forced tool selection (model must call a specific named tool)**
+### ◇ The distinction between `tool_choice: "auto"` (model may return text instead of calling a tool), `"any"` (model must call a tool but can choose which), and forced tool selection (model must call a specific named tool)
 
-  | Setting | Claude can return text? | Claude chooses the tool? |
-  |---|---|---|
-  | `"auto"` | Yes | Yes |
-  | `"any"` | No | Yes (from available tools) |
-  | `{"type": "tool", "name": "X"}` | No | No (must call X) |
+| Setting | Claude can return text? | Claude chooses the tool? |
+|---|---|---|
+| `"auto"` | Yes | Yes |
+| `"any"` | No | Yes (from available tools) |
+| `{"type": "tool", "name": "X"}` | No | No (must call X) |
 
-  Note: with `"any"` or forced selection, Claude will not emit natural language before the tool use block, even if instructed to.
+Note: with `"any"` or forced selection, Claude will not emit natural language before the tool use block, even if instructed to.
 
-- **That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)**
+### ◇ That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)
 
-  Schema validation catches structure problems (missing fields, wrong types). It does NOT catch logic problems (amounts that don't add up, dates in the wrong field). You need separate validation for semantic correctness.
+Schema validation catches structure problems (missing fields, wrong types). It does NOT catch logic problems (amounts that don't add up, dates in the wrong field). You need separate validation for semantic correctness.
 
-- **Schema design considerations: required vs optional fields, enum fields with "other" + detail string patterns for extensible categories**
+### ◇ Schema design considerations: required vs optional fields, enum fields with "other" + detail string patterns for extensible categories
 
-  - Make fields optional/nullable when the source might not contain the information — prevents hallucination to satisfy required fields
-  - Use enum + "other" pattern for categories: `["invoice", "receipt", "contract", "other"]` with an `other_detail` string field
+- Make fields optional/nullable when the source might not contain the information — prevents hallucination to satisfy required fields
+- Use enum + "other" pattern for categories: `["invoice", "receipt", "contract", "other"]` with an `other_detail` string field
 
-### Skills in:
+## Skills in:
 
-- **Defining extraction tools with JSON schemas as input parameters and extracting structured data from the `tool_use` response**
+### ◆ Defining extraction tools with JSON schemas as input parameters and extracting structured data from the `tool_use` response
 
-  Define a tool whose input schema IS your desired output format. Claude "calls" the tool with the extracted data.
+Define a tool whose input schema IS your desired output format. Claude "calls" the tool with the extracted data.
 
-- **Setting `tool_choice: "any"` to guarantee structured output when multiple extraction schemas exist and the document type is unknown**
+### ◆ Setting `tool_choice: "any"` to guarantee structured output when multiple extraction schemas exist and the document type is unknown
 
-  Let Claude pick the right extraction schema while guaranteeing it produces structured output.
+Let Claude pick the right extraction schema while guaranteeing it produces structured output.
 
-- **Forcing a specific tool with `tool_choice: {"type": "tool", "name": "extract_metadata"}` to ensure a particular extraction runs before enrichment steps**
+### ◆ Forcing a specific tool with `tool_choice: {"type": "tool", "name": "extract_metadata"}` to ensure a particular extraction runs before enrichment steps
 
-  Use forced selection when step ordering matters.
+Use forced selection when step ordering matters.
 
-- **Designing schema fields as optional (nullable) when source documents may not contain the information, preventing the model from fabricating values to satisfy required fields**
+### ◆ Designing schema fields as optional (nullable) when source documents may not contain the information, preventing the model from fabricating values to satisfy required fields
 
-  If a field is required, Claude will fill it even if the data doesn't exist in the source — leading to hallucination. Make it nullable.
+If a field is required, Claude will fill it even if the data doesn't exist in the source — leading to hallucination. Make it nullable.
 
-- **Adding enum values like `"unclear"` for ambiguous cases and `"other"` + detail fields for extensible categorization**
+### ◆ Adding enum values like `"unclear"` for ambiguous cases and `"other"` + detail fields for extensible categorization
 
-  Give Claude an escape hatch for ambiguous cases. `"unclear"` is better than forcing a wrong category.
+Give Claude an escape hatch for ambiguous cases. `"unclear"` is better than forcing a wrong category.
 
-- **Including format normalization rules in prompts alongside strict output schemas to handle inconsistent source formatting**
+### ◆ Including format normalization rules in prompts alongside strict output schemas to handle inconsistent source formatting
 
-  The schema enforces structure; the prompt handles format normalization (e.g., "normalize all dates to ISO 8601").
+The schema enforces structure; the prompt handles format normalization (e.g., "normalize all dates to ISO 8601").
 
 ---
 
